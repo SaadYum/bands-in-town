@@ -10,17 +10,6 @@ export default function Home() {
   const [artistResult, setArtistResult] = useState(null);
   const [searchingArtist, setSearchingArtist] = useState(false); // Search State flag for Artist API
 
-  // Checking on initial render for the last searched artist
-  // If searchedQuery property is present in the localstorage,
-  // then we'll call the Search Artist method to get the last searched artist data
-  useEffect(() => {
-    if (localStorage.getItem("searchedQuery")) {
-      let searchedQuery = localStorage.getItem("searchedQuery");
-      setQuery(searchedQuery);
-      searchArtist(searchedQuery);
-    }
-  }, []);
-
   // User Latest searched query handler
   const changeHandler = (event) => {
     let searchedQuery = event.target.value;
