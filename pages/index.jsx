@@ -163,7 +163,7 @@ export default function Home() {
                 <span className="text-lg font-medium mt-4">
                   {artistResult.upcoming_event_count} Upcoming Events
                 </span>
-                {/* Showind Activity Indicator when searching for Events */}
+                {/* Showing Activity Indicator when searching for Events */}
                 {searchingEvents ? (
                   <div className="flex justify-center items-center">
                     <ThreeDots color="#00BFFF" height={80} width={80} />
