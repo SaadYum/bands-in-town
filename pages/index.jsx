@@ -2,14 +2,17 @@ import { SearchIcon } from "@heroicons/react/outline";
 import { useEffect, useMemo, useState } from "react";
 import { debounce } from "lodash";
 import { ThreeDots } from "react-loader-spinner";
+import EventCard from "../components/EventCard";
 import { format_nums } from "../utils/utils";
-import { searchArtistAPI } from "../utils/api";
+import { getArtistEventsAPI, searchArtistAPI } from "../utils/api";
+import ReactTooltip from "react-tooltip";
 
 export default function Home() {
   const [query, setQuery] = useState("");
   const [artistResult, setArtistResult] = useState(null);
   const [searchingArtist, setSearchingArtist] = useState(false); // Search State flag for Artist API
-
+  const [searchingEvents, setSearchingEvents] = useState(false); // Search State flag for Events API
+  const [events, setEvents] = useState([]);
   // User Latest searched query handler
   const changeHandler = (event) => {
     let searchedQuery = event.target.value;
@@ -39,12 +42,38 @@ export default function Home() {
           //Success
           setArtistResult(res);
           // Will call the getEvents after a second for a smooth UI transition
+          setTimeout(getArtistEvents(artist_query), 1000);
           setSearchingArtist(false);
         })
         .catch((err) => {
           //Failure
           setArtistResult(null);
           setSearchingArtist(false);
+        });
+    }
+  };
+
+  // The Main getArtistEvents Method with the user input query
+  //1. Check for artist_query to be not null or empty
+  //2. Set events search flag as true
+  //3. Get Events API call with the provided artist_query
+  //4. Handling response with the response from the API i.e. Success/Failure
+  //5. Set events search flag as false after the response handling
+  const getArtistEvents = (artist_query) => {
+    if (artist_query) {
+      setSearchingEvents(true);
+      //API call here
+      getArtistEventsAPI(artist_query)
+        .then((res) => {
+          //Success
+          console.log();
+          setEvents(res);
+          setSearchingEvents(false);
+        })
+        .catch((err) => {
+          //Failure
+          setEvents([]);
+          setSearchingEvents(false);
         });
     }
   };
@@ -117,6 +146,32 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
+                {/*Displaying Event Count */}
+                <span className="text-lg font-medium mt-4">
+                  {artistResult.upcoming_event_count} Upcoming Events
+                </span>
+                {/* Showind Activity Indicator when searching for Events */}
+                {searchingEvents ? (
+                  <div className="flex justify-center items-center">
+                    <ThreeDots color="#00BFFF" height={80} width={80} />
+                  </div>
+                ) : (
+                  <>
+                    {/* EVENTS */}
+                    <div className=" grid gap-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1  md:w-full mt-2 px-16 custom-scroll 2xl:h-[60vh] xl:h-[50vh]  ">
+                      <ReactTooltip place="top" type="dark" effect="solid" />
+                      {events.map((event, index) => (
+                        <div key={index + "event"}>
+                          <EventCard
+                            event_data={event}
+                            artist_data={artistResult}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </>
             ) : null}
           </>
