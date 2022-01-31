@@ -95,8 +95,8 @@ export default function Home() {
       {/* Main Section */}
       <main className="flex flex-col p-4 w-full center bg-transparent">
         {/* Search Input */}
-        <div className="h-20 w-full center">
-          <div className="flex items-center justify-between relative rounded-full xl:text-lg lg:text-sm md:text-xs border-[1px] border-gray-300 p-3  ">
+        <div className="h-20 sm:w-full w-3/4 center">
+          <div className="flex items-center justify-between relative rounded-full xl:text-lg lg:text-sm md:text-xs text-xs border-[1px] border-gray-300 p-3  ">
             <input
               type="text"
               placeholder={query ? query : "Search Artists"}
@@ -171,7 +171,7 @@ export default function Home() {
                 ) : (
                   <>
                     {/* EVENTS */}
-                    <div className=" grid gap-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1  md:w-full mt-2 px-16 custom-scroll 2xl:h-[60vh] xl:h-[50vh]  ">
+                    <div className=" grid sm:gap-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 grid-cols-1  md:w-full mt-2 sm:px-16 custom-scroll 2xl:h-[60vh] xl:h-[50vh]  ">
                       <ReactTooltip place="top" type="dark" effect="solid" />
                       {events.map((event, index) => (
                         <div key={index + "event"}>
