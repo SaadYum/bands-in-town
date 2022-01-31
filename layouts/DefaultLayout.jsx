@@ -4,24 +4,8 @@ import DarkModeSwitch from "../components/DarkModeSwitch";
 import styles from "../styles/layout.module.css";
 
 export default function DefaultLayout({ children }) {
-  const [displayChildren, setDisplayChildren] = useState(children);
-  const [transitionStage, setTransitionStage] = useState("fadeOut");
-  useEffect(() => {
-    setTransitionStage("fadeIn");
-  }, []);
-  useEffect(() => {
-    if (children !== displayChildren) setTransitionStage("fadeOut");
-  }, [children, setDisplayChildren, displayChildren]);
   return (
-    <div
-      onTransitionEnd={() => {
-        if (transitionStage === "fadeOut") {
-          setDisplayChildren(children);
-          setTransitionStage("fadeIn");
-        }
-      }}
-      className={`${styles.content} ${styles[transitionStage]}`}
-    >
+    <div>
       <Head>
         <title>Bands In Town</title>
         <meta name="description" content="Bands in Town App" />
@@ -33,8 +17,8 @@ export default function DefaultLayout({ children }) {
           rel="stylesheet"
         />
       </Head>
+      <div className="custom-scroll">{children}</div>
       <DarkModeSwitch />
-      <div className="custom-scroll">{displayChildren}</div>
     </div>
   );
 }
